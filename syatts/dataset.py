@@ -26,6 +26,7 @@ class LJSpeech(Dataset):
         x = torch.tensor(encode(text, self.cfg["max_text_len"]), dtype=torch.long)
         mel = wav_to_logmel(str(self.root / "wavs" / f"{wav_id}.wav"), self.cfg)
         mel = mel[:, : self.cfg["max_mel_frames"]]
+        mel_len = mel.shape[1]
         pad = math.log(self.cfg.get("mel_floor", 1e-5))
         mel = F.pad(mel, (0, self.cfg["max_mel_frames"] - mel.shape[1]), value=pad)
-        return x, mel
+        return x, mel, mel_len
