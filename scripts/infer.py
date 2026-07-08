@@ -14,7 +14,7 @@ def main():
     p.add_argument("--ckpt", required=True)
     p.add_argument("--text", required=True)
     p.add_argument("--out", default="sample.wav")
-    p.add_argument("--frames", type=int, default=420)
+    p.add_argument("--frames", type=int)
     args = p.parse_args()
 
     ckpt = torch.load(args.ckpt, map_location="cpu")
@@ -25,7 +25,7 @@ def main():
 
     text = torch.tensor([encode(args.text, cfg["max_text_len"])])
     with torch.no_grad():
-        mel = model(text, args.frames)[0]
+        mel = model(text, args.frames or cfg["max_mel_frames"])[0]
     wav = logmel_to_wav(mel, cfg).numpy()
     sf.write(args.out, wav, cfg["sample_rate"])
     print(Path(args.out).resolve())
@@ -33,4 +33,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
