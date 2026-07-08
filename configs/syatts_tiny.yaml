@@ -1,0 +1,12 @@
+sample_rate: 22050
+n_mels: 80
+n_fft: 1024
+hop_length: 256
+win_length: 1024
+max_text_len: 180
+max_mel_frames: 860
+batch_size: 12
+epochs: 20
+lr: 0.0003
+hidden: 256
+
